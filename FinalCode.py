@@ -9,6 +9,34 @@ from datetime import datetime
 import schedule
 import time
 
+Data = datetime.today().strftime('/%y/%m/%y')
+
+def CriarDir(processo):
+    Path_PE = ("./home/$USER/VAN_STAGE/341/PE/{}/{}/".format(processo,Data))
+    Path_CE = ("./home/$USER/VAN_STAGE/341/CE/{}/{}/".format(processo,Data))
+    Path_EXT = ("./home/$USER/VAN_STAGE/341/EXT/{}/{}/".format(processo,Data))
+    Path_IMB = ("./home/$USER/VAN_STAGE/341/IMB/{}/{}/".format(processo, Data))
+
+    try:
+        os.makedirs(Path_PE)
+    except FileExistsError:
+        pass
+    try:
+        os.makedirs(Path_CE)
+    except FileExistsError:
+        pass
+    try:
+        os.makedirs(Path_EXT)
+    except FileExistsError:
+        pass
+    try:
+        os.makedirs(Path_IMB)
+    except FileExistsError:
+        pass
+
+CriarDir("em_processo")
+CriarDir("processado")
+
 # Tema da interface GUI
 sg.theme("Reddit")
 
