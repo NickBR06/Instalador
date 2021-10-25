@@ -9,9 +9,9 @@ from datetime import datetime
 data_agora = datetime.now()
 mes_atual = data_agora.strftime('%m')
 
-os.system("mkdir -p /home/nickolas/VAN_STAGE/logs/{}".format(mes_atual))
+os.system("mkdir -p /home/eduardo/VAN_STAGE/logs/{}".format(mes_atual))
 
-logging.basicConfig(filename="/home/nickolas/VAN_STAGE/logs/{}/logging.log".format(mes_atual),
+logging.basicConfig(filename="/home/eduardo/VAN_STAGE/logs/{}/logging.log".format(mes_atual),
                     level=logging.INFO, format='%(name)s %(levelname)s %(asctime)s %(message)s',
                     filemode='a')
 Data = datetime.today().strftime('/%y/%m/%d')
@@ -19,35 +19,35 @@ Data = datetime.today().strftime('/%y/%m/%d')
 
 def CriarDir(processo):
     try:
-        os.system("mkdir -p /home/nickolas/VAN_STAGE/341/PE/RET/{}/{}/".format(processo, Data))
+        os.system("mkdir -p /home/eduardo/VAN_STAGE/341/PE/RET/{}/{}/".format(processo, Data))
     except FileExistsError:
         pass
     try:
-        os.system("mkdir -p /home/nickolas/VAN_STAGE/341/PE/REM/{}/{}/".format(processo, Data))
+        os.system("mkdir -p /home/eduardo/VAN_STAGE/341/PE/REM/{}/{}/".format(processo, Data))
     except FileExistsError:
         pass
     try:
-        os.system("mkdir -p /home/nickolas/VAN_STAGE/341/PE/RET/{}/{}/".format(processo, Data))
+        os.system("mkdir -p /home/eduardo/VAN_STAGE/341/PE/RET/{}/{}/".format(processo, Data))
     except FileExistsError:
         pass
     try:
-        os.system("mkdir -p /home/nickolas/VAN_STAGE/341/CE/REM/{}/{}/".format(processo, Data))
+        os.system("mkdir -p /home/eduardo/VAN_STAGE/341/CE/REM/{}/{}/".format(processo, Data))
     except FileExistsError:
         pass
     try:
-        os.system("mkdir -p /home/nickolas/VAN_STAGE/341/CE/RET/{}/{}/".format(processo, Data))
+        os.system("mkdir -p /home/eduardo/VAN_STAGE/341/CE/RET/{}/{}/".format(processo, Data))
     except FileExistsError:
         pass
     try:
-        os.system("mkdir -p /home/nickolas/VAN_STAGE/341/EXT/RET/{}/{}/".format(processo, Data))
+        os.system("mkdir -p /home/eduardo/VAN_STAGE/341/EXT/RET/{}/{}/".format(processo, Data))
     except FileExistsError:
         pass
     try:
-        os.system("mkdir -p /home/nickolas/VAN_STAGE/341/INBOX/REM/{}/{}/".format(processo, Data))
+        os.system("mkdir -p /home/eduardo/VAN_STAGE/341/INBOX/REM/{}/{}/".format(processo, Data))
     except FileExistsError:
         pass
     try:
-        os.system("mkdir -p /home/nickolas/VAN_STAGE/341/INBOX/RET/{}/{}/".format(processo, Data))
+        os.system("mkdir -p /home/eduardo/VAN_STAGE/341/INBOX/RET/{}/{}/".format(processo, Data))
     except FileExistsError:
         pass
 
@@ -58,10 +58,10 @@ CriarDir("processado")
 
 
 try:
-    os.system("mkdir -p /home/nickolas/VAN_STAGE/logs/{}/".format(mes_atual))
+    os.system("mkdir -p /home/eduardo/VAN_STAGE/logs/{}/".format(mes_atual))
 except FileExistsError:
     pass
-logging.basicConfig(filename='/home/nickolas/VAN_STAGE/logs/{}/logging.log'.format(mes_atual),
+logging.basicConfig(filename='/home/eduardo/VAN_STAGE/logs/{}/logging.log'.format(mes_atual),
                     level=logging.INFO, format='%(name)s %(levelname)s %(asctime)s %(message)s',
                     filemode='a')
 
@@ -70,9 +70,9 @@ def Conexao():
     # Variaveis
     Data = datetime.today().strftime('/%y/%m/%d')
     ssh = paramiko.SSHClient()
-    p_local_rem_processar_pe = ("/home/nickolas/VAN_STAGE/341/PE/REM/em_processo/{}/".format(Data))
-    p_local_rem_processado_pe = ("/home/nickolas/VAN_STAGE/341/PE/REM/processado/{}".format(Data))
-    p_local_ret_processar_pe = ("/home/nickolas/VAN_STAGE/341/PE/RET/em_processo/".format(Data))
+    p_local_rem_processar_pe = ("/home/eduardo/VAN_STAGE/341/PE/REM/em_processo/{}/".format(Data))
+    p_local_rem_processado_pe = ("/home/eduardo/VAN_STAGE/341/PE/REM/processado/{}".format(Data))
+    p_local_ret_processar_pe = ("/home/eduardo/VAN_STAGE/341/PE/RET/em_processo/".format(Data))
     p_remote_processar = '/var/www/clients/client1/web1/home/prbrasenior/Dados_ftp/Processos/'
     p_remote_processados = '/var/www/clients/client1/web1/home/prbrasenior/Dados_ftp/Retornos/'
     host = 'isp01.ms-01-prod-pr.com.br'
