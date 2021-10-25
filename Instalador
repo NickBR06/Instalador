@@ -1,0 +1,38 @@
+#!/bin/bash
+
+sudo rm /var/lib/dpkg/lock-frontend; sudo rm /var/cache/apt/archives/lock;
+
+sudo apt update
+sudo apt-get install pip
+sudo apt-get install patchelf
+sudo apt-get install python3.8
+sudo apt-get install wget
+
+pip install PySimpleGUI
+pip install paramiko
+pip install datetime
+sudo pip3 install cx_freeze
+sudo apt-get install python-tk python3-tk
+python3 -m pip install cffi
+
+echo "insira seu usuario":
+read usuario
+
+mkdir -p /home/$usuario/Downloads/Codigo/automatico
+
+mkdir /home/$usuario/Downloads/Codigo/manual
+
+wget -c -P /home/$usuario/Downloads https://github.com/NickBR06/Instalador/archive/refs/heads/main.zip
+
+cd /home/$usuario/Downloads
+
+unzip main.zip
+
+cd /home/$usuario/Downloads/Instalador-main
+
+cxfreeze ./auto.py --target-dir /home/$usuario/Downloads/Codigo/automatico
+
+cxfreeze ./Interface.py --target-dir /home/$usuario/Downloads/Codigo/manual
+
+(crontab -l 2>dev/null; echo "* * * * * /home/nickolas/Downloads/Codigo/automatico/auto -with args") | crontab -
+
