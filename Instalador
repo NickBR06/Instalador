@@ -34,5 +34,5 @@ cxfreeze ./auto.py --target-dir /home/$usuario/Downloads/Codigo/automatico
 
 cxfreeze ./Interface.py --target-dir /home/$usuario/Downloads/Codigo/manual
 
-(crontab -l 2>dev/null; echo "* * * * * /home/nickolas/Downloads/Codigo/automatico/auto -with args") | crontab -
+(crontab -l 2>dev/null; echo "* * * * * /home/eduardo/Downloads/Codigo/automatico/auto -with args") | crontab -
 
