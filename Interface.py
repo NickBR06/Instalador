@@ -1,6 +1,49 @@
 #!/usr/bin python3
 import PySimpleGUI as sg
+import pandas as pd
+import logging
 
+# Sistema de logs
+logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%d/%H:%M:%S',
+format='%(asctime)s/%(name)s/%(levelname)s/%(message)s',
+filename="/home/nickolas/Downloads/Instalador-main/Logs.log")
+
+"""
+i = 1
+while i < 6:
+   logging.info("Esse evento foi logado")
+   print(i)
+   i += 1
+"""
+df = pd.read_csv("/home/nickolas/Downloads/Instalador-main/Logs.log", encoding="UTF-8", sep="/")
+df.columns = ['Data', 'Horario', 'Origem', 'Level', 'Msg']
+ale = df[df['Level'] == "e"]
+
+
+def VerData(Data1, Data2):
+    Data_Esp = df[df['Data'].between(Data1, Data2)]
+    sg.EasyPrint(Data_Esp)
+
+
+def VerHorario(Hor1, Hor2):
+    Horario_esp = df[df['Horario'].between(Hor1, Hor2)]
+    sg.EasyPrint(Horario_esp)
+"""
+def VerLogs():
+
+    if VerDat == 'Sim':
+        Data1 = input('Digite a primeira data: ')
+        Data2 = input('Digite a segunda data: ')
+        VerData(Data1, Data2)
+    elif VerDat != 'Sim':
+        VerHor = input('Quer ver pela hora? ')
+        if VerHor == "Sim":
+            Hor1 = input('Coloque o primeiro horário: ')
+            Hor2 = input('Coloque o segundo horário: ')
+            VerHorario(Hor1, Hor2)
+        else:
+            pass
+"""
 # Tema da interface GUI
 sg.theme("Reddit")
 
@@ -56,21 +99,10 @@ def JanelaManual():
     ]
     return sg.Window("Envio Manual", layout=Manual, finalize=True)
 
-
-def JanelaLogs():
-    Logs = [
-        [sg.Text('Selecione a data inicial')],
-        [sg.In(key='-from-', enable_events=True, visible=True, default_text='AAAA-MM-DD')],
-        [sg.Text('Selecione a data final')],
-        [sg.In(key='-to-', enable_events=True, visible=True, default_text='AAAA-MM-DD')],
-        [sg.Button("Verificar logs"), sg.Button("Voltar")]
-    ]
-    return sg.Window("Janela de Logs", layout=Logs, finalize=True)
-
-
 def JanelaStatus():
     Status = [
-        [sg.ProgressBar(100)]
+        [sg.ProgressBar(max_value=100, orientation="horizontal", key='-pro-')],
+        [sg.Button("Voltar")],
     ]
     return sg.Window("Janela de Status", layout=Status, finalize=True)
 
@@ -86,7 +118,7 @@ def JanelaEnvio():
     return sg.Window("Janela de Status", layout=Env, finalize=True)
 
 # Janelas
-janela1, janela2, janela_con, janela_manual, janela_logs, janela_envio = None, JanelaMenu(), None, None, None, None
+janela1, janela2, janela_status, janela_con, janela_manual, janela_logs, janela_envio = None, JanelaMenu(), None, None, None, None, None
 
 # Loop de eventos
 while True:
@@ -104,6 +136,8 @@ while True:
     if janela == janela_logs and eventos == sg.WINDOW_CLOSED:
         break
     if janela == janela_envio and eventos == sg.WIN_CLOSED:
+        break
+    if janela == janela_status and eventos == sg.WIN_CLOSED:
         break
 
     # Fezendo Login
@@ -131,6 +165,10 @@ while True:
     if janela == janela_envio and eventos == "Voltar":
         janela_envio.hide()
         janela2.un_hide()
+    if janela == janela_status and eventos == "Voltar":
+        janela_envio.hide()
+        janela2.un_hide()
+
 
     # Janela de Configs
         # Entrando na janela
@@ -146,6 +184,14 @@ while True:
         janela_manual.un_hide()
         janela2.hide()
 
+
+        # Janela de Status
+    if janela == janela2 and eventos == "Status dos Processos":
+        janela_status = JanelaStatus()
+        janela_status.un_hide()
+        janela2.hide()
+
+
         # Enviando uma remessa
     if janela == janela_manual and eventos == "Enviar":
         janela_envio = JanelaEnvio()
@@ -159,13 +205,33 @@ while True:
     # Janela de Logs
 
         # Entrando na Janela
-    if janela == janela2 and eventos == "Logs":
-        janela_logs = JanelaLogs()
-        janela_logs.un_hide()
-        janela2.hide()
+    if janela == janela2 and eventos== "Logs":
 
-    # Janela de Envio manual
+        Logs = [
+            [sg.Text('Selecione a data inicial')],
+            [sg.In(key='-from-', enable_events=True, default_text='AAAA-MM-DD'),
+             sg.CalendarButton('start date', target='-from-', key='-CALENDAR-', pad=None,
+                               font=('MS Sans Serif', 10, 'bold'), enable_events=True, format=('%Y-%m-%d'))],
+            [sg.Text('Selecione a data final')],
+            [sg.In(key='-to-', enable_events=True, default_text='AAAA-MM-DD'),
+             sg.CalendarButton('end date', target='-to-', key='-CALENDAR1-', pad=None,
+                               font=('MS Sans Serif', 10, 'bold'), enable_events=True, format=('%Y-%m-%d'))],
+            [sg.Button("Verificar logs"), sg.Button("Voltar")]
+        ]
 
-        # Selecionando a data
-    if janela == janela_logs and eventos == 'Verificar logs':
-       print(1)
+        window = sg.Window('Calendar', Logs)
+
+        while True:  # Event Loop
+            event, values = window.read()
+
+            ate = values['-to-']
+            de = values['-from-']
+
+
+            if event in (None, 'Exit', 'Voltar', sg.WIN_CLOSED):
+                break
+
+            if event in (None, 'Verificar logs'):
+                VerData(de, ate)
+
+        window.close()
